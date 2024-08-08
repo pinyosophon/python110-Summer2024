@@ -38,15 +38,15 @@ class FileProcessor:
             student_data = json.load(file)
             file.close()
         except FileNotFoundError as e:
-            IO.output_error_message("Text file must exist before running this script!\n", e)
+            IO.output_message("Text file must exist before running this script!\n", e)
             file = open(filename, "w")
             json.dump(student_data, file)
         except JSONDecodeError as e:
-            IO.output_error_message("--Technical Information--", e)
+            IO.output_message("--Technical Information--", e)
             file = open(filename, "w")
             json.dump(student_data, file)
         except Exception as e:
-            IO.output_error_message("Unhandle Exception", e)
+            IO.output_message("Unhandle Exception", e)
         finally:
             if file.closed == False:
                 file.close()
@@ -73,30 +73,24 @@ class FileProcessor:
         except Exception as e:
             if file.closed == False:
                 file.close()
-            IO.output_error_message("Error: There was a problem with writing to the file.", e)
+            IO.output_message("Error: There was a problem with writing to the file.", e)
 
 
 # When the program starts, read the file data into a list of lists (table)
 # Extract the data from the file
 class IO:
-    @staticmethod
-    def output_message(message: str):
-        '''
-        print message
-        :param message: string message to print
-        :return: None
-        '''
-        print(message)
 
     @staticmethod
-    def output_error_message(message: str, error: Exception = None):
+    def output_message(message: str, error: Exception = None):
+        print(message)
         '''
         print error message when there's exception
         :param message: string messsage to print
         :param error: Exception
         :return: None
         '''
-        if Exception is not None:
+        #if Exception is not None: #this wouldn't work because Exception is a type
+        if error is not None: #you must use error which is a variable
             print("--technical information--")
             print(error, error.__doc__, type(error), sep='\n')
 
@@ -134,10 +128,10 @@ class IO:
             student_data.append(student_row)
             IO.output_message(f"You have registered {student_first_name} {student_last_name} for {course_name}.")
         except ValueError as e:
-            IO.output_error_message("-- Technical Error Message -- ", e)  # Prints the custom message
+            IO.output_message("-- Technical Error Message -- ", e)  # Prints the custom message
 
         except Exception as e:
-            IO.output_error_message("Error: There was a problem with your entered data.", e)
+            IO.output_message("Error: There was a problem with your entered data.", e)
 
         return student_data
 
