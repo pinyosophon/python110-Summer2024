@@ -4,6 +4,8 @@
 # with structured error handling
 # Change Log: (Who, When, What)
 #   RRoot,1/1/2030,Created Script
+#   Phiphat Pinyosophon, 08/12/2024, update script to use Person and Student class, create validation for each attribute
+#   Update the rest of the code to referencing object instances created from Student class whenever an object is created
 #   <Your Name Here>,<Date>,<Activity>
 # ------------------------------------------------------------------------------------------ #
 import json
@@ -22,12 +24,13 @@ FILE_NAME: str = "Enrollments.json"
 
 # Define the Data Variables
 students: list = []  # a table of student data
-menu_choice: str = '' # Hold the choice made by the user.
+menu_choice: str = ''  # Hold the choice made by the user.
+
 
 # TODO Create a Person Class
 class Person:
     # TODO Add first_name and last_name properties to the constructor (Done)
-    def __init__(self, first_name:str = '', last_name:str = ""):
+    def __init__(self, first_name: str = '', last_name: str = ""):
         '''
         creating property with constructor for person class with
         first_name and last_name as parameters to initialize
@@ -38,58 +41,70 @@ class Person:
         self.last_name = last_name
 
     # TODO Create a getter and setter for the first_name property (Done)
-    @property  #this part is getter
-    def first_name(self): #retrieve first_name
-        return self.__first_name.title() #return first_name, and make sure it's capitalized
+    @property  # this part is getter
+    def first_name(self):  # retrieve first_name
+        return self.__first_name.title()  # return first_name, capitalize it and store it in memory
 
-    @first_name.setter #this part is setter
+    @first_name.setter  # this part is setter
     def first_name(self, value: str):
-        if value.isalpha() or value == '':
-            self.__first_name = value
+        if value.isalpha() or value == '':  # check if the input is alphabetic, it's ok if not putting anything here as well
+            self.__first_name = value  # assign value to this private instance if it meets condition
         else:
-            raise ValueError("First name must be letters")
+            raise ValueError("First name must be letters")  # raise this error if it'snot
 
     # TODO Create a getter and setter for the last_name property (Done)
-    @property #getter part
-    def last_name(self):
-        return self.__last_name.title()
+    @property  # getter part
+    def last_name(self):  # retrieve last_name
+        return self.__last_name.title()  # return last_name, make it capitalized and store it in memory
 
     @last_name.setter
-    def last_name(self, value: str):
-        if value.isalpha() or value == '':
-            self.__last_name = value
+    def last_name(self, value: str):  # setter for last_name
+        if value.isalpha() or value == '':  # validation part, check if input is alphabetic, not putting anything is ok too
+            self.__last_name = value  # if meet condition, assign value to last_name private instance
         else:
-            raise ValueError("Last name must be letters")
+            raise ValueError("Last name must be letters")  # raise value error if not
 
     # TODO Override the __str__() method to return Person data (Done)
-    def __str__(self):
-        return f'{self.first_name},{self.last_name}'
+    def __str__(self):  # override string method and return Person data
+        return f'{self.first_name},{self.last_name}'  # return first name and last name with a comma in between
+
 
 # TODO Create a Student class the inherits from the Person class (Done)
 class Student(Person):
+
     # TODO call to the Person constructor and pass it the first_name and last_name data (Done)
-    def __init__(self, first_name:str = '', last_name:str = '', course_name:str =''):
-        super().__init__(first_name = first_name, last_name = last_name)
+    def __init__(self, first_name: str = '', last_name: str = '', course_name: str = ''):
+        '''
+        inherit first_name and last_name from Person class, construct course_name property
+        :param first_name: string parameter inheriting for first_name parameter from Person class
+        :param last_name: string parameter inheriting for last_name parameter from Person class
+        :param course_name: string parameter assigned for course_name
+        '''
+        super().__init__(first_name=first_name, last_name=last_name)
         # TODO add a assignment to the course_name property using the course_name parameter (Done)
         self.course_name = course_name
 
     # TODO add the getter for course_name (Done)
-    @property
-    def course_name(self):
-        return self.__course_name.title()
-    # TODO add the setter for course_name (Done)
-    @course_name.setter
-    def course_name(self, value: str):
+    @property  # getter
+    def course_name(self):  # retrieving course_name
+        return self.__course_name.title()  # return course_name, capitalize it and store in memory
 
+    # TODO add the setter for course_name (Done)
+    @course_name.setter  # setter
+    def course_name(self, value: str):  # course_name validation
+        # use for loop to check for each character in value string,
+        # if any of them is a special character, raise ValueError
         if all(char.isalnum() or char.isspace() for char in value) or value == '':
-            self.__course_name = value
+            # if each letter is alphanumeric, or white space, or nothing is put there, return true
+            self.__course_name = value  # and value will be assigned to course_name
         else:
             raise ValueError("course name must be letters")
 
     # TODO Override the __str__() method to return the Student data (Done)
     def __str__(self):
-        result = super().__str__()
-        return f'{result},{self.course_name}'
+        result = super().__str__()  # inheriting this string method from Person Superclass
+        return f'{result},{self.course_name}'  # combine inherited string from Superclass to course_name
+
 
 # Processing --------------------------------------- #
 class FileProcessor:
@@ -99,6 +114,7 @@ class FileProcessor:
     ChangeLog: (Who, When, What)
     RRoot,1.1.2030,Created Class
     """
+
     @staticmethod
     def read_data_from_file(file_name: str, student_data: list):
         """ This function reads data from a json file and map its dictionary to parameters created with
@@ -116,11 +132,11 @@ class FileProcessor:
 
         try:
             file = open(file_name, "r")
-            list_of_dict_data = json.load(file) #store list of dictionary from json to here
+            list_of_dict_data = json.load(file)  # store list of dictionary from json to here
             for student in list_of_dict_data:
-                student_obj: Student = Student(first_name = student["FirstName"],
-                                               last_name = student["LastName"],
-                                               course_name = student["CourseName"])
+                student_obj: Student = Student(first_name=student["FirstName"],
+                                               last_name=student["LastName"],
+                                               course_name=student["CourseName"])
                 student_data.append(student_obj)
             file.close()
         except Exception as e:
@@ -137,6 +153,7 @@ class FileProcessor:
 
         ChangeLog: (Who, When, What)
         RRoot,1.1.2030,Created function
+        phiphat 08/12/2024 mapping parameters from Student to json dictionary
 
         :param file_name: string data with name of file to write to
         :param student_data: list of dictionary rows to be writen to the file
@@ -158,7 +175,7 @@ class FileProcessor:
         except Exception as e:
             message = "Error: There was a problem with writing to the file.\n"
             message += "Please check that the file is not open by another program."
-            IO.output_error_messages(message=message,error=e)
+            IO.output_error_messages(message=message, error=e)
         finally:
             if file.closed == False:
                 file.close()
@@ -219,7 +236,7 @@ class IO:
         choice = "0"
         try:
             choice = input("Enter your menu choice number: ")
-            if choice not in ("1","2","3","4"):  # Note these are strings
+            if choice not in ("1", "2", "3", "4"):  # Note these are strings
                 raise Exception("Please, choose only 1, 2, 3, or 4")
         except Exception as e:
             IO.output_error_messages(e.__str__())  # Not passing e to avoid the technical message
@@ -232,6 +249,7 @@ class IO:
 
         ChangeLog: (Who, When, What)
         RRoot,1.1.2030,Created function
+        phiphat, 08/12/2024, update it to use reference from object instance from Student class
 
         :param student_data: list of dictionary rows to be displayed
 
@@ -250,6 +268,7 @@ class IO:
 
         ChangeLog: (Who, When, What)
         RRoot,1.1.2030,Created function
+        phiphat, 08/12/2024, mapping each input from user to related parameter from Student class
 
         :param student_data: list of dictionary rows to be filled with input data
 
@@ -278,7 +297,7 @@ class IO:
 students = FileProcessor.read_data_from_file(file_name=FILE_NAME, student_data=students)
 
 # Present and Process the data
-while (True):
+while True:
 
     # Present the menu of choices
     IO.output_menu(menu=MENU)
