@@ -37,35 +37,57 @@ class Person:
         :param first_name: string parameter we assign for first_name
         :param last_name: string parameter we assign for last_name
         '''
-        self.first_name = first_name
-        self.last_name = last_name
+        self.first_name = first_name #(putting a single underscore here to make it "protected attribute"
+        self.last_name = last_name #tell it that you're not supposed to access this outside a person class)
 
     # TODO Create a getter and setter for the first_name property (Done)
     @property  # this part is getter
-    def first_name(self):  # retrieve first_name
-        return self.__first_name.title()  # return first_name, capitalize it and store it in memory
+    def first_name(self)->str:  # retrieve first_name
+        '''
+        getter, returns first_name as title
+        :return: the first name formatted with first letter capitalized
+        '''
+        return self._first_name.title()  # return first_name, capitalize it and store it in memory
 
     @first_name.setter  # this part is setter
-    def first_name(self, value: str):
+    def first_name(self, value: str)->None:
+        '''
+        setter, set first name and doing validaitons
+        :param value: value to be set for first_name
+        :return: None
+        '''
         if value.isalpha() or value == '':  # check if the input is alphabetic, it's ok if not putting anything here as well
-            self.__first_name = value  # assign value to this private instance if it meets condition
+            self._first_name = value  # assign value to this private instance if it meets condition
         else:
-            raise ValueError("First name must be letters")  # raise this error if it'snot
+            raise ValueError("First name must be alphabetic")  # raise this error if it'snot
 
     # TODO Create a getter and setter for the last_name property (Done)
     @property  # getter part
-    def last_name(self):  # retrieve last_name
-        return self.__last_name.title()  # return last_name, make it capitalized and store it in memory
+    def last_name(self)->str:  # retrieve last_name
+        '''
+        getter, returns last_name as title
+        :return: the last name formatted with first letter capitalized
+        '''
+        return self._last_name.title()  # return last_name, make it capitalized and store it in memory
 
     @last_name.setter
-    def last_name(self, value: str):  # setter for last_name
+    def last_name(self, value: str)->None:  # setter for last_name
+        '''
+         setter, set last name and doing validaitons
+        :param value: value to be set for last_name
+        :return: None
+        '''
         if value.isalpha() or value == '':  # validation part, check if input is alphabetic, not putting anything is ok too
-            self.__last_name = value  # if meet condition, assign value to last_name private instance
+            self._last_name = value  # if meet condition, assign value to last_name private instance
         else:
-            raise ValueError("Last name must be letters")  # raise value error if not
+            raise ValueError("Last name must be alphabetic")  # raise value error if not
 
     # TODO Override the __str__() method to return Person data (Done)
     def __str__(self):  # override string method and return Person data
+        '''
+        string function for person
+        :return: string as csv value
+        '''
         return f'{self.first_name},{self.last_name}'  # return first name and last name with a comma in between
 
 
@@ -86,12 +108,21 @@ class Student(Person):
 
     # TODO add the getter for course_name (Done)
     @property  # getter
-    def course_name(self):  # retrieving course_name
+    def course_name(self)->str:  # retrieving course_name
+        '''
+        getter, returns course_name as title
+        :return: course name formatted with first letter capitalized
+        '''
         return self.__course_name.title()  # return course_name, capitalize it and store in memory
 
     # TODO add the setter for course_name (Done)
     @course_name.setter  # setter
     def course_name(self, value: str):  # course_name validation
+        '''
+         setter, set course name and doing validaitons
+        :param value: value to be set for course_name
+        :return: None
+        '''
         # use for loop to check for each character in value string,
         # if any of them is a special character, raise ValueError
         if all(char.isalnum() or char.isspace() for char in value) or value == '':
@@ -102,6 +133,10 @@ class Student(Person):
 
     # TODO Override the __str__() method to return the Student data (Done)
     def __str__(self):
+        '''
+        string function for Student
+        :return:
+        '''
         result = super().__str__()  # inheriting this string method from Person Superclass
         return f'{result},{self.course_name}'  # combine inherited string from Superclass to course_name
 
