@@ -29,6 +29,9 @@ menu_choice: str = ''  # Hold the choice made by the user.
 
 # TODO Create a Person Class
 class Person:
+    '''
+    class created for Student to inherit first_name and last_name attributes
+    '''
     # TODO Add first_name and last_name properties to the constructor (Done)
     def __init__(self, first_name: str = '', last_name: str = ""):
         '''
@@ -93,6 +96,9 @@ class Person:
 
 # TODO Create a Student class the inherits from the Person class (Done)
 class Student(Person):
+    '''
+    class created to inherit first_name and last_name attributes from Person Superclass, this one has course_name
+    '''
 
     # TODO call to the Person constructor and pass it the first_name and last_name data (Done)
     def __init__(self, first_name: str = '', last_name: str = '', course_name: str = ''):
