@@ -6,6 +6,7 @@
 #   RRoot,1/1/2030,Created Script
 #   Phiphat Pinyosophon, 08/12/2024, update script to use Person and Student class, create validation for each attribute
 #   Update the rest of the code to referencing object instances created from Student class whenever an object is created
+#   phiphat pin, 08/12/2024, update to use __ instead of _
 #   <Your Name Here>,<Date>,<Activity>
 # ------------------------------------------------------------------------------------------ #
 import json
@@ -50,7 +51,7 @@ class Person:
         getter, returns first_name as title
         :return: the first name formatted with first letter capitalized
         '''
-        return self._first_name.title()  # return first_name, capitalize it and store it in memory
+        return self.__first_name.title()  # return first_name, capitalize it and store it in memory
 
     @first_name.setter  # this part is setter
     def first_name(self, value: str)->None:
@@ -60,7 +61,7 @@ class Person:
         :return: None
         '''
         if value.isalpha() or value == '':  # check if the input is alphabetic, it's ok if not putting anything here as well
-            self._first_name = value  # assign value to this private instance if it meets condition
+            self.__first_name = value  # assign value to this private instance if it meets condition
         else:
             raise ValueError("First name must be alphabetic")  # raise this error if it'snot
 
@@ -71,7 +72,7 @@ class Person:
         getter, returns last_name as title
         :return: the last name formatted with first letter capitalized
         '''
-        return self._last_name.title()  # return last_name, make it capitalized and store it in memory
+        return self.__last_name.title()  # return last_name, make it capitalized and store it in memory
 
     @last_name.setter
     def last_name(self, value: str)->None:  # setter for last_name
@@ -81,7 +82,7 @@ class Person:
         :return: None
         '''
         if value.isalpha() or value == '':  # validation part, check if input is alphabetic, not putting anything is ok too
-            self._last_name = value  # if meet condition, assign value to last_name private instance
+            self.__last_name = value  # if meet condition, assign value to last_name private instance
         else:
             raise ValueError("Last name must be alphabetic")  # raise value error if not
 
